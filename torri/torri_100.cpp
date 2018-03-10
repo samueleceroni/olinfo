@@ -1,53 +1,53 @@
 #include <fstream>
-#include <algorithm>
 #include <vector>
-#include <iostream>
-#include <utility>
 
-#define MAXT 1e4
-#define INF 5*1e7
+#define MAX 1e9
+
 using namespace std;
 
 ifstream fin("input.txt");
 ofstream fout("output.txt");
 
-int costoDistruzione(vector<int> &v, int first, int last){
+int distruggi(vector<int> &v, int first, int last){
     int sol=0;
-    for(int i=first; i<=last; i++)
+    for (int i = first; i <= last; i++)
         sol += v[i];
     return sol;
 }
 
 int main(){
-    //leggo N
-    int n, costomin, temp;
+
+    int n, temp, costomin;
+
     fin >> n;
     n++;
-    vector<int> altezza (n), costo(n), dp(n, -1); //dichiaro un vettore di interi di grandezza n
 
-    altezza[0] = MAXT;
-    costo[0] = MAXT;
+    vector<int> alt(n), cos(n), dp(n);
 
-    for(int i = 1; i < n; i++)
-        fin >> altezza[i] >> costo[i]; //inizializzo i valori
+    alt[0] = MAX;
+    cos[0] = MAX;
+    dp[0] = MAX;
 
-    for (int i = n - 1; i >= 0; i--){
-        costomin = INF;
-        for (int j = i + 1; j < n; j++){
-            temp = 0;
-            if(altezza[i]>altezza[j]){
-                temp = dp[j] + costoDistruzione(costo, i+1, j-1);
-                if(temp < costomin)
+    for (int i=1; i<n; i++)
+        fin >> alt[i] >> cos[i];
+
+    for (int i = n-1; i >= 0; i--){
+        
+        costomin = MAX;
+
+        for (int j = i+1; j < n; j++){
+            if(alt[i] > alt[j]){
+                temp = dp[j] + distruggi(cos, i+1, j-1);
+                if (temp < costomin)
                     costomin = temp;
             }
         }
-        if(costomin == INF)
-            costomin = costoDistruzione(costo,i+1,n-1);
+
+        if (costomin == MAX)
+            costomin = distruggi(cos, i+1, n-1);
 
         dp[i] = costomin;
     }
 
-    fout<<dp[0];
-
-    return 0;
+    fout << dp[0];
 }
