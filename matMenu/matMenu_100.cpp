@@ -26,7 +26,7 @@ int main(){
     }
 
     for (int i = n-1; i>=0; i--){
-        for (int j = 0; j <= k; j++){
+        for (int j = 0; j < k; j++){
             // non prendo
             if (i+1 < n)
                 memo[i][j] = memo [i+1][j];
@@ -44,7 +44,7 @@ int main(){
 
     temp = k;
 
-    for (int i = 0; i<n && temp>=0; i++){
+    for (int i = 0; i<n && temp>0; i++){
         if(memo1[i][temp] == 1){
             fout << arr[i] << endl;
             temp = temp-arr[i];
